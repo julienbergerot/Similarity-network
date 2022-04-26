@@ -6,6 +6,8 @@ from PIL import Image
 import PIL.ImageOps   
 import os 
 
+from tqdm import tqdm
+
 import torchvision
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
@@ -189,7 +191,7 @@ class SiameseNetworkDatasetInference(Dataset):
     def __len__(self):
         return len(self.images)
     
-def create_dataset_testing(direc : str, transform = None) :
+def create_dataset_testing(direc : str, transform = None, batch_size=5) :
     """
         Directory contains all the folders (with the name of the person) that have images
     """
@@ -199,7 +201,7 @@ def create_dataset_testing(direc : str, transform = None) :
             inputs.append(os.path.join(os.path.join(direc,directory),file))
             
     test = SiameseNetworkDatasetInference(inputs, transform=transform)
-    test_dataloader = DataLoader(test, num_workers=0, batch_size=5, shuffle=True)
+    test_dataloader = DataLoader(test, num_workers=0, batch_size=batch_size, shuffle=True)
     
     return test_dataloader
 
@@ -222,7 +224,7 @@ def find_best_match(prediction_dataloader, test_dataloader, device, net) :
     best_score = 100
     best_class = ""
 
-    for x1, cl in test_dataloader :
+    for x1, cl in tqdm(test_dataloader) :
         # Concatenate the two images together
         output1, output2 = net(x0, x1.to(device))
         euclidean_distance = F.pairwise_distance(output1, output2)

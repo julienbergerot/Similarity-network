@@ -7,3 +7,14 @@ All the project is available in the notebook.
 It will firstly download the data for training, create the dataset and the model and finally train it. The model will then be saved and tested on an another dataset.
 
 You can also specify your own personal image to see your closest match in among certain persons (by default in the training set).
+
+### Example
+
+This is an example obtained with a personal picture.
+
+<img
+src="example.png"
+raw=true
+alt="Subject Pronouns"
+style="margin-right: 10px;"
+/>
